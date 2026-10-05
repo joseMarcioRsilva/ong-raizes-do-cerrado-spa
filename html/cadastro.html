@@ -1,0 +1,231 @@
+<!-- VIEW: Cadastro — fragmento carregado pelo roteador. A lógica fica em
+     js/modules/validacao.js, mascaras.js e storage.js. -->
+<section class="hero hero--compacto" aria-labelledby="titulo-principal">
+      <div class="container">
+        <h1 id="titulo-principal" tabindex="-1">Faça parte da Raízes do Cerrado</h1>
+        <p class="hero__texto">Preencha o formulário para se cadastrar como voluntário ou doador. Leva menos de 3 minutos.</p>
+      </div>
+    </section>
+
+    <section class="container secao" aria-labelledby="titulo-form">
+      <h2 id="titulo-form">Formulário de cadastro</h2>
+      <p>Campos marcados com <span aria-hidden="true">*</span><span class="sr-only">asterisco</span> são obrigatórios.</p>
+      <!-- Alerta informativo fixo (role="note": informação complementar) -->
+      <div class="alerta alerta--info" role="note">
+        <span class="alerta__icone" aria-hidden="true">ℹ</span>
+        <div>
+          <strong class="alerta__titulo">Seus dados estão protegidos</strong>
+          <p>Usamos suas informações só para contato sobre voluntariado e doações, conforme a LGPD. Você pode pedir a exclusão a qualquer momento.</p>
+        </div>
+      </div>
+
+      <!--
+        action: para onde os dados iriam (aqui não há backend, então fica "#").
+        method="post": dados vão no corpo da requisição, não na URL (CPF não pode aparecer na URL!).
+        novalidate: a validação passa a ser feita pelo JavaScript (js/modules/validacao.js),
+        que mostra mensagens próprias abaixo de cada campo. Os atributos required/pattern
+        continuam no HTML como documentação e como base das regras.
+      -->
+      <form class="formulario" action="#" method="post" novalidate data-form-cadastro>
+
+        <!-- <fieldset> agrupa campos relacionados; <legend> é o título do grupo
+             (o leitor de tela anuncia a legenda ao entrar no grupo) -->
+        <fieldset>
+          <legend>Dados pessoais</legend>
+
+          <div class="campo">
+            <label for="nome">Nome completo *</label>
+            <!-- autocomplete ajuda o navegador a preencher sozinho -->
+            <input type="text" id="nome" name="nome" required
+                   minlength="3" maxlength="100" autocomplete="name"
+                   pattern="[A-Za-zÀ-ÿ' ]+"
+                   title="Use apenas letras e espaços">
+          </div>
+
+          <div class="campo">
+            <label for="email">E-mail *</label>
+            <!-- type="email" já valida o formato e mostra "@" no teclado do celular -->
+            <input type="email" id="email" name="email" required
+                   maxlength="120" autocomplete="email"
+                   placeholder="nome@exemplo.com">
+          </div>
+
+          <div class="campo">
+            <label for="cpf">CPF *</label>
+            <!--
+              Máscara/validação nativa com pattern (Regex):
+              \d{3}  = 3 dígitos
+              \.     = ponto literal
+              -      = hífen literal
+              Resultado aceito: 000.000.000-00
+              inputmode="numeric" abre o teclado numérico no celular.
+              aria-describedby liga o campo ao texto de ajuda abaixo.
+            -->
+            <input type="text" id="cpf" name="cpf" required
+                   inputmode="numeric" maxlength="14"
+                   pattern="\d{3}\.\d{3}\.\d{3}-\d{2}"
+                   placeholder="000.000.000-00"
+                   title="Formato: 000.000.000-00"
+                   aria-describedby="ajuda-cpf"
+                   data-mascara="cpf">
+            <small id="ajuda-cpf" class="ajuda">Formato: 000.000.000-00</small>
+          </div>
+
+          <div class="campo">
+            <label for="nascimento">Data de nascimento *</label>
+            <!-- type="date" abre o calendário nativo; min/max limitam o intervalo -->
+            <input type="date" id="nascimento" name="nascimento" required
+                   min="1920-01-01" max="2010-12-31"
+                   autocomplete="bday"
+                   aria-describedby="ajuda-nascimento">
+            <small id="ajuda-nascimento" class="ajuda">Voluntários precisam ter pelo menos 16 anos.</small>
+          </div>
+
+          <div class="campo">
+            <label for="telefone">Telefone / WhatsApp *</label>
+            <!--
+              type="tel" abre o teclado de telefone.
+              Pattern aceita fixo (8 dígitos) e celular (9 dígitos):
+              \(\d{2}\)  = DDD entre parênteses
+              espaço
+              \d{4,5}    = 4 ou 5 dígitos
+              -\d{4}     = hífen + 4 dígitos
+              Ex.: (64) 99999-0000 ou (64) 3441-0000
+            -->
+            <input type="tel" id="telefone" name="telefone" required
+                   maxlength="15" autocomplete="tel"
+                   pattern="\(\d{2}\) \d{4,5}-\d{4}"
+                   placeholder="(64) 99999-0000"
+                   title="Formato: (00) 00000-0000"
+                   aria-describedby="ajuda-telefone"
+                   data-mascara="telefone">
+            <small id="ajuda-telefone" class="ajuda">Formato: (00) 00000-0000</small>
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend>Endereço</legend>
+
+          <div class="campo">
+            <label for="cep">CEP *</label>
+            <!-- \d{5}-\d{3} = 00000-000 -->
+            <input type="text" id="cep" name="cep" required
+                   inputmode="numeric" maxlength="9"
+                   pattern="\d{5}-\d{3}"
+                   placeholder="00000-000"
+                   title="Formato: 00000-000"
+                   autocomplete="postal-code"
+                   aria-describedby="ajuda-cep"
+                   data-mascara="cep">
+            <small id="ajuda-cep" class="ajuda">Formato: 00000-000</small>
+          </div>
+
+          <div class="campo">
+            <label for="endereco">Endereço (rua e número) *</label>
+            <input type="text" id="endereco" name="endereco" required
+                   maxlength="150" autocomplete="address-line1">
+          </div>
+
+          <div class="campo campo--duplo">
+            <div>
+              <label for="cidade">Cidade *</label>
+              <input type="text" id="cidade" name="cidade" required
+                     maxlength="80" autocomplete="address-level2">
+            </div>
+            <div>
+              <label for="estado">Estado *</label>
+              <!-- <select> com opção vazia + required obriga a escolher -->
+              <select id="estado" name="estado" required autocomplete="address-level1">
+                <option value="">Selecione</option>
+                <option value="GO" selected>Goiás</option>
+                <option value="DF">Distrito Federal</option>
+                <option value="MG">Minas Gerais</option>
+                <option value="MT">Mato Grosso</option>
+                <option value="MS">Mato Grosso do Sul</option>
+                <option value="TO">Tocantins</option>
+                <option value="SP">São Paulo</option>
+                <option value="OUTRO">Outro</option>
+              </select>
+            </div>
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend>Como você quer participar? *</legend>
+          <!-- Radio: só uma opção. Mesmo "name" = mesmo grupo.
+               required em um deles já obriga a escolher uma opção. -->
+          <div class="opcoes">
+            <label><input type="radio" name="participacao" value="voluntario" required> Voluntário</label>
+            <label><input type="radio" name="participacao" value="doador"> Doador</label>
+            <label><input type="radio" name="participacao" value="ambos"> Voluntário e doador</label>
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend>Áreas de interesse</legend>
+          <!-- Checkbox: várias opções. name com [] é convenção para o backend receber uma lista -->
+          <div class="opcoes">
+            <label><input type="checkbox" name="interesses[]" value="hortas"> Hortas comunitárias</label>
+            <label><input type="checkbox" name="interesses[]" value="educacao"> Oficinas nas escolas</label>
+            <label><input type="checkbox" name="interesses[]" value="cozinha"> Cozinha Solidária</label>
+            <label><input type="checkbox" name="interesses[]" value="comunicacao"> Comunicação e redes sociais</label>
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend>Disponibilidade e mensagem</legend>
+
+          <div class="campo">
+            <label for="horas">Horas disponíveis por mês</label>
+            <p class="ajuda"><output id="horas-valor" for="horas">8</output> horas selecionadas</p>
+            <!-- range = controle deslizante; o <output> mostra o valor escolhido -->
+            <input type="range" id="horas" name="horas" min="2" max="40" step="2" value="8"
+                  >
+          </div>
+
+          <div class="campo">
+            <label for="mensagem">Conte um pouco sobre você (opcional)</label>
+            <textarea id="mensagem" name="mensagem" rows="4" maxlength="500"
+                      aria-describedby="ajuda-mensagem"></textarea>
+            <small id="ajuda-mensagem" class="ajuda">Máximo de 500 caracteres.</small>
+          </div>
+        </fieldset>
+
+        <div class="campo campo--termo">
+          <label>
+            <input type="checkbox" name="termos" required>
+            Li e concordo com o uso dos meus dados pela ONG, conforme a LGPD. *
+          </label>
+        </div>
+
+        <div class="formulario__acoes">
+          <button type="submit" class="botao">Enviar cadastro</button>
+          <button type="reset" class="botao botao--secundario">Limpar</button>
+        </div>
+      </form>
+
+      <!-- Rascunho: aviso exibido quando há dados salvos automaticamente -->
+      <p class="ajuda" data-status-rascunho aria-live="polite"></p>
+    </section>
+
+    <!-- Cadastros salvos no localStorage, renderizados pelo template itemCadastro -->
+    <section class="container secao" aria-labelledby="titulo-salvos">
+      <h2 id="titulo-salvos">Cadastros feitos neste navegador</h2>
+      <p>Para fins de demonstração, os cadastros ficam guardados no <code>localStorage</code> do seu navegador. Numa versão real, seriam enviados ao servidor da ONG.</p>
+      <ul class="lista-cadastros" data-lista-cadastros aria-live="polite"></ul>
+    </section>
+
+    <!-- Modal de confirmação: <dialog> nativo. O form method="dialog"
+         fecha o modal sem enviar nada ao servidor. -->
+    <dialog class="modal" id="modal-confirmacao" aria-labelledby="modal-titulo">
+      <div class="modal__cabecalho">
+        <span class="badge badge--sucesso">✓ Enviado</span>
+      </div>
+      <div class="modal__corpo">
+        <h2 id="modal-titulo">Cadastro recebido!</h2>
+        <p>Obrigado por querer fazer parte da Raízes do Cerrado. Nossa equipe vai entrar em contato pelo WhatsApp em até 3 dias úteis.</p>
+      </div>
+      <form method="dialog" class="modal__acoes">
+        <button class="botao" type="submit" autofocus>Entendi</button>
+      </form>
+    </dialog>

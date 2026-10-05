@@ -1,0 +1,587 @@
+/* =========================================================
+   ONG Raízes do Cerrado — Design System + folha de estilo
+   Organização (ITCSS simplificado):
+     tokens.css → reset.css → style.css (base, layout, componentes) → 4. Acessibilidade
+     5. Layout → 6. Componentes → 7. Utilitários/preferências
+   Nomenclatura de classes: BEM (bloco__elemento--modificador)
+   Regra de ouro: nenhum componente usa cor, tamanho ou espaço "solto";
+   tudo vem dos tokens abaixo.
+   ========================================================= */
+
+/* =========================================================
+   3. BASE (elementos HTML puros)
+   ========================================================= */
+body {
+  margin: 0;
+  font-family: var(--fonte-base);
+  font-size: var(--fs-base);
+  line-height: var(--altura-linha-texto);
+  color: var(--cor-neutra-900);
+  background: var(--cor-neutra-50);
+}
+
+h1, h2, h3 {
+  line-height: var(--altura-linha-titulo);
+  color: var(--cor-primaria-900);
+  margin: 0 0 var(--esp-3);
+}
+h1 { font-size: var(--fs-2xl); font-weight: var(--peso-extra); }
+h2 { font-size: var(--fs-lg);  font-weight: var(--peso-forte); }
+h3 { font-size: var(--fs-md);  font-weight: var(--peso-forte); }
+
+p { margin: 0 0 var(--esp-3); }
+
+a { color: var(--cor-primaria-700); }
+a:hover { color: var(--cor-primaria-900); }
+
+/* =========================================================
+   4. ACESSIBILIDADE
+   ========================================================= */
+.sr-only {
+  position: absolute; width: 1px; height: 1px;
+  overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap;
+}
+
+.pular-link {
+  position: absolute; left: var(--esp-3); top: -100px; z-index: 100;
+  background: var(--cor-secundaria-500); color: var(--cor-neutra-900);
+  padding: var(--esp-2) var(--esp-3); border-radius: var(--raio-md);
+}
+.pular-link:focus { top: var(--esp-3); }
+
+:focus-visible {
+  outline: 3px solid var(--cor-secundaria-500);
+  outline-offset: 2px;
+}
+
+/* =========================================================
+   5. LAYOUT
+   ========================================================= */
+.container {
+  width: min(100% - 2 * var(--esp-3), var(--largura-max));
+  margin-inline: auto;
+}
+
+.secao { padding-block: var(--esp-6); }
+.secao--destaque { background: var(--cor-primaria-100); }
+
+/* ---------------------------------------------------------
+   5.1 SISTEMA DE GRID DE 12 COLUNAS (Mobile First)
+   Todo bloco que organiza conteúdo lado a lado usa a mesma
+   grade de 12 colunas; os filhos "ocupam" N colunas (span).
+   Breakpoints (variáveis CSS não funcionam dentro de @media,
+   por isso ficam documentados aqui):
+     xs  <  480px   celulares pequenos   (base, sem @media)
+     sm  ≥  480px   celulares grandes
+     md  ≥  768px   tablets
+     lg  ≥ 1024px   notebooks
+     xl  ≥ 1280px   desktops
+     2xl ≥ 1536px   monitores panorâmicos
+   --------------------------------------------------------- */
+.grid-12,
+.grade-2,
+.grade-3,
+.numeros,
+.campo--duplo {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  gap: var(--esp-4);
+}
+
+/* Base (xs): todo filho ocupa as 12 colunas = 1 por linha */
+.grid-12 > *,
+.grade-2 > *,
+.grade-3 > *,
+.numeros > *,
+.campo--duplo > * { grid-column: span 12; }
+
+/* Classes utilitárias de coluna (usadas como .col-6, .col-md-4 etc.) */
+.col-1 { grid-column: span 1; }  .col-2 { grid-column: span 2; }
+.col-3 { grid-column: span 3; }  .col-4 { grid-column: span 4; }
+.col-6 { grid-column: span 6; }  .col-8 { grid-column: span 8; }
+.col-9 { grid-column: span 9; }  .col-12 { grid-column: span 12; }
+
+/* ---------- Breakpoint 1 — sm ≥ 480px: celulares grandes ---------- */
+@media (min-width: 480px) {
+  .numeros > * { grid-column: span 6; }           /* números 2×2 */
+  .col-sm-6 { grid-column: span 6; }
+  .hero__acoes .botao { flex: 0 0 auto; }
+}
+
+/* ---------- Breakpoint 2 — md ≥ 768px: tablets ---------- */
+@media (min-width: 768px) {
+  .grade-2 > * { grid-column: span 6; }           /* 2 colunas */
+  .grade-3 > * { grid-column: span 6; }           /* 2 colunas */
+  .campo--duplo > :first-child { grid-column: span 8; } /* cidade 8/12 */
+  .campo--duplo > :last-child  { grid-column: span 4; } /* estado 4/12 */
+  .col-md-4 { grid-column: span 4; }
+  .col-md-6 { grid-column: span 6; }
+  .col-md-8 { grid-column: span 8; }
+  .secao { padding-block: var(--esp-7); }
+}
+
+/* ---------- Breakpoint 3 — lg ≥ 1024px: notebooks ---------- */
+@media (min-width: 1024px) {
+  .grade-3 > * { grid-column: span 4; }           /* 3 colunas */
+  .numeros > * { grid-column: span 3; }           /* 4 números numa linha */
+  .col-lg-3 { grid-column: span 3; }
+  .col-lg-4 { grid-column: span 4; }
+  .col-lg-6 { grid-column: span 6; }
+}
+
+/* ---------- Breakpoint 4 — xl ≥ 1280px: desktops ---------- */
+@media (min-width: 1280px) {
+  :root { --largura-max: 1200px; }
+  .grid-12, .grade-2, .grade-3, .numeros { gap: var(--esp-5); }
+  .hero { padding-block: calc(var(--esp-7) + var(--esp-5)); }
+}
+
+/* ---------- Breakpoint 5 — 2xl ≥ 1536px: monitores panorâmicos ---------- */
+@media (min-width: 1536px) {
+  :root { --largura-max: 1320px; }
+  html { font-size: 112.5%; }   /* 18px: toda a escala em rem cresce junto */
+}
+
+/* =========================================================
+   6. COMPONENTES
+   ========================================================= */
+
+/* ---------- 6.1 Cabeçalho e menu ---------- */
+.cabecalho {
+  background: var(--cor-neutra-0);
+  box-shadow: var(--sombra-sm);
+  position: sticky; top: 0; z-index: 10;
+}
+.cabecalho__interno {
+  display: flex; flex-wrap: wrap; gap: var(--esp-3);
+  align-items: center; justify-content: space-between;
+  padding-block: var(--esp-3);
+}
+.logo {
+  display: flex; align-items: center; gap: var(--esp-2);
+  font-weight: var(--peso-forte); font-size: var(--fs-md);
+  color: var(--cor-primaria-900); text-decoration: none;
+}
+/* ---------- 6.1b Menu de navegação (Mobile First) ----------
+   < 768px : menu escondido atrás do botão hambúrguer, abre como painel vertical
+   ≥ 768px : menu horizontal com submenu (dropdown) em "Projetos"            */
+.cabecalho__interno { position: relative; }
+
+.menu {
+  list-style: none; margin: 0; padding: 0;
+  display: flex; flex-direction: column; gap: var(--esp-2);
+  /* Painel móvel: posicionado abaixo do cabeçalho, escondido por padrão */
+  position: absolute; top: 100%; left: 0; right: 0;
+  background: var(--cor-neutra-0);
+  padding: var(--esp-3);
+  box-shadow: var(--sombra-md);
+  /* Escondido de forma acessível: visibility tira do Tab e do leitor de tela */
+  visibility: hidden; opacity: 0; transform: translateY(-8px);
+  transition: opacity var(--transicao), transform var(--transicao), visibility var(--transicao);
+}
+.menu.menu--aberto { visibility: visible; opacity: 1; transform: translateY(0); }
+
+.menu a { display: block; padding: var(--esp-2); text-decoration: none; font-weight: var(--peso-medio); color: var(--cor-neutra-900); }
+.menu a:hover { color: var(--cor-primaria-700); }
+.menu a[aria-current="page"]:not(.botao) {
+  color: var(--cor-primaria-700);
+  box-shadow: inset 0 -3px 0 var(--cor-secundaria-500);
+}
+.menu .botao { text-align: center; }
+
+/* Submenu no celular: aparece "aberto" e recuado dentro do painel */
+.submenu { list-style: none; margin: 0; padding: 0 0 0 var(--esp-3); border-left: 3px solid var(--cor-primaria-100); }
+.submenu a { font-weight: var(--peso-normal); font-size: var(--fs-sm); }
+
+/* Botão hambúrguer: três barras feitas com um <span> e seus ::before/::after */
+.menu-toggle {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 44px; height: 44px;           /* área de toque mínima recomendada */
+  background: transparent; border: var(--borda-campo) solid var(--cor-neutra-300);
+  border-radius: var(--raio-sm); cursor: pointer;
+}
+.menu-toggle__barra,
+.menu-toggle__barra::before,
+.menu-toggle__barra::after {
+  display: block; position: relative;
+  width: 22px; height: 3px; border-radius: 2px;
+  background: var(--cor-primaria-900);
+  transition: transform var(--transicao), background-color var(--transicao);
+}
+.menu-toggle__barra::before,
+.menu-toggle__barra::after { content: ""; position: absolute; left: 0; }
+.menu-toggle__barra::before { top: -7px; }
+.menu-toggle__barra::after  { top: 7px; }
+/* Aberto: as três barras viram um "X" */
+.menu-toggle[aria-expanded="true"] .menu-toggle__barra { background: transparent; }
+.menu-toggle[aria-expanded="true"] .menu-toggle__barra::before { transform: translateY(7px) rotate(45deg); }
+.menu-toggle[aria-expanded="true"] .menu-toggle__barra::after  { transform: translateY(-7px) rotate(-45deg); }
+
+/* ≥ 768px: menu horizontal + dropdown */
+@media (min-width: 768px) {
+  .menu-toggle { display: none; }
+
+  .menu {
+    position: static; flex-direction: row; align-items: center; gap: var(--esp-3);
+    padding: 0; background: none; box-shadow: none;
+    visibility: visible; opacity: 1; transform: none;
+  }
+
+  .menu__item--submenu { position: relative; }
+  .menu__item--submenu > a::after { content: " ▾"; font-size: var(--fs-xs); }
+
+  /* Submenu escondido na resolução padrão */
+  .submenu {
+    position: absolute; top: 100%; left: 0; z-index: 20;
+    min-width: 230px; padding: var(--esp-2) 0;
+    background: var(--cor-neutra-0); border: 0;
+    border-radius: var(--raio-md); box-shadow: var(--sombra-md);
+    visibility: hidden; opacity: 0; transform: translateY(8px);
+    transition: opacity var(--transicao), transform var(--transicao), visibility var(--transicao);
+  }
+  .submenu a { padding: var(--esp-2) var(--esp-3); font-size: var(--fs-base); }
+  .submenu a:hover { background: var(--cor-primaria-100); }
+
+  /* Aparece com o mouse (:hover) OU com o teclado (:focus-within) */
+  .menu__item--submenu:hover > .submenu,
+  .menu__item--submenu:focus-within > .submenu {
+    visibility: visible; opacity: 1; transform: translateY(0);
+  }
+}
+
+/* ---------- 6.2 Hero ---------- */
+.hero {
+  background: linear-gradient(135deg, var(--cor-primaria-900), var(--cor-primaria-700));
+  color: var(--cor-neutra-0);
+  padding-block: var(--esp-7);
+}
+.hero h1 { color: var(--cor-neutra-0); }
+.hero__texto { font-size: var(--fs-md); max-width: var(--largura-leitura); }
+.hero__acoes { display: flex; flex-wrap: wrap; gap: var(--esp-3); margin-top: var(--esp-4); }
+.hero--compacto { padding-block: var(--esp-6); }
+
+/* ---------- 6.3 Botões ---------- */
+.botao {
+  display: inline-block;
+  background: var(--cor-secundaria-500); color: var(--cor-neutra-900);
+  font: inherit; font-weight: var(--peso-forte); font-size: var(--fs-base);
+  padding: var(--esp-3) var(--esp-4);
+  border: var(--borda-campo) solid transparent; border-radius: var(--raio-md);
+  text-decoration: none; cursor: pointer;
+  transition: background-color var(--transicao), transform var(--transicao),
+              box-shadow var(--transicao), opacity var(--transicao);
+}
+/* :hover — o botão "sobe" 2px, ganha sombra maior e escurece levemente */
+.botao:hover {
+  background: var(--cor-secundaria-600);
+  transform: translateY(-2px);
+  box-shadow: var(--sombra-md);
+}
+/* :focus-visible — anel duplo (branco + verde) que aparece só na navegação por teclado */
+.botao:focus-visible {
+  outline: 3px solid var(--cor-primaria-900);
+  outline-offset: 2px;
+  box-shadow: 0 0 0 2px var(--cor-neutra-0);
+}
+/* :active — no clique o botão "afunda": volta à posição e a sombra diminui */
+.botao:active {
+  transform: translateY(1px);
+  box-shadow: var(--sombra-sm);
+}
+/* :disabled — aparência apagada, cursor de bloqueio e sem animações */
+.botao:disabled,
+.botao[aria-disabled="true"] {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+  pointer-events: none;
+}
+
+/* Variante secundária (contorno) */
+.botao--secundario { background: transparent; border-color: currentColor; color: inherit; }
+.botao--secundario:hover { background: rgb(255 255 255 / 0.12); }
+.formulario .botao--secundario:hover,
+.cartao .botao--secundario:hover { background: var(--cor-primaria-100); }
+.botao--pequeno { padding: var(--esp-2) var(--esp-3); }
+
+/* ---------- 6.4 Cartões ---------- */
+.cartao {
+  background: var(--cor-neutra-0);
+  border-radius: var(--raio-md);
+  box-shadow: var(--sombra-sm);
+  padding: var(--esp-4);
+  transition: box-shadow var(--transicao);
+}
+.cartao:hover { box-shadow: var(--sombra-md); }
+/* Flexbox vertical: o cartão vira uma coluna e o último parágrafo
+   (onde fica o botão de ação) é empurrado para o rodapé do cartão.
+   Assim, cartões vizinhos de alturas iguais (grid) alinham os botões. */
+.cartao { display: flex; flex-direction: column; }
+.cartao > p:last-child { margin-top: auto; margin-bottom: 0; }
+.cartao--projeto figure { margin: calc(-1 * var(--esp-4)) calc(-1 * var(--esp-4)) var(--esp-3); }
+.cartao--projeto img { width: 100%; border-radius: var(--raio-md) var(--raio-md) 0 0; }
+.cartao--projeto figcaption {
+  font-size: var(--fs-sm); color: var(--cor-neutra-700);
+  padding: var(--esp-2) var(--esp-4) 0;
+}
+.etiqueta {
+  display: inline-block; margin: 0 0 var(--esp-2);
+  background: var(--cor-primaria-100); color: var(--cor-primaria-900);
+  font-size: var(--fs-xs); font-weight: var(--peso-forte);
+  padding: var(--esp-1) var(--esp-2); border-radius: var(--raio-pilula);
+}
+
+/* ---------- 6.5 Números de impacto ---------- */
+.numeros { margin: 0; } /* grade de 12 colunas definida na seção 5.1 */
+.numeros div {
+  background: var(--cor-neutra-0); border-radius: var(--raio-md);
+  padding: var(--esp-4); text-align: center;
+}
+.numeros dt { color: var(--cor-neutra-700); }
+.numeros dd {
+  margin: 0; font-size: var(--fs-xl); font-weight: var(--peso-extra);
+  color: var(--cor-secundaria-700);
+}
+
+.lista-passos li { margin-bottom: var(--esp-2); }
+
+/* ---------- 6.6 Imagem de destaque ---------- */
+.foto-destaque { margin: var(--esp-4) 0; max-width: 640px; }
+.foto-destaque img { width: 100%; border-radius: var(--raio-md); box-shadow: var(--sombra-sm); }
+.foto-destaque figcaption { font-size: var(--fs-sm); color: var(--cor-neutra-700); margin-top: var(--esp-2); }
+
+/* ---------- 6.7 Lista de doação ---------- */
+.lista-doacao { display: grid; grid-template-columns: auto 1fr; gap: var(--esp-2) var(--esp-3); }
+.lista-doacao dt { font-weight: var(--peso-extra); color: var(--cor-secundaria-700); }
+.lista-doacao dd { margin: 0; }
+
+/* ---------- 6.8 Tabela ---------- */
+.tabela-rolagem { overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; background: var(--cor-neutra-0); }
+caption { text-align: left; font-weight: var(--peso-medio); padding-bottom: var(--esp-2); }
+th, td { padding: var(--esp-3); border-bottom: 1px solid var(--cor-neutra-200); text-align: left; }
+thead th { background: var(--cor-primaria-900); color: var(--cor-neutra-0); }
+
+/* ---------- 6.9 Formulário ---------- */
+.formulario { max-width: var(--largura-form); }
+fieldset {
+  border: 1px solid var(--cor-neutra-300); border-radius: var(--raio-md);
+  padding: var(--esp-4); margin: 0 0 var(--esp-4);
+  background: var(--cor-neutra-0);
+}
+legend {
+  font-weight: var(--peso-forte); font-size: var(--fs-md);
+  color: var(--cor-primaria-900); padding-inline: var(--esp-2);
+}
+
+.campo { display: flex; flex-direction: column; gap: var(--esp-2); margin-bottom: var(--esp-3); }
+.campo--duplo { display: grid; margin-bottom: var(--esp-3); } /* 8/4 colunas a partir de 768px (seção 5.1) */
+.campo--duplo > div { display: flex; flex-direction: column; gap: var(--esp-2); }
+
+label { font-weight: var(--peso-medio); }
+.ajuda { color: var(--cor-neutra-700); font-size: var(--fs-sm); margin: 0; }
+
+input, select, textarea {
+  font: inherit;
+  padding: var(--esp-2) var(--esp-3);
+  border: var(--borda-campo) solid var(--cor-neutra-300); border-radius: var(--raio-sm);
+  background: var(--cor-neutra-0);
+}
+input:focus, select:focus, textarea:focus {
+  border-color: var(--cor-primaria-700);
+  box-shadow: var(--sombra-foco);
+  outline: none;
+}
+
+input, select, textarea { transition: border-color var(--transicao), box-shadow var(--transicao), background-color var(--transicao); }
+input:hover, select:hover, textarea:hover { border-color: var(--cor-primaria-700); }
+
+/* Feedback de validação (controlado pelo JavaScript em js/modules/validacao.js)
+   aria-invalid="true"  → erro: borda e fundo vermelhos + mensagem abaixo
+   aria-invalid="false" → válido: borda e fundo verdes
+   Sem o atributo       → campo ainda não avaliado (aparência neutra)
+   A cor nunca é o único sinal: a mensagem de erro aparece em texto. */
+[aria-invalid="true"]:is(input, select, textarea) {
+  border-color: var(--cor-erro);
+  background-color: var(--cor-erro-50);
+}
+[aria-invalid="true"]:is(input, select, textarea):focus { box-shadow: var(--sombra-foco-erro); }
+[aria-invalid="false"]:is(input:not([type="checkbox"], [type="radio"]), select, textarea) {
+  border-color: var(--cor-sucesso);
+  background-color: var(--cor-sucesso-50);
+}
+input[type="radio"][aria-invalid="true"],
+input[type="checkbox"][aria-invalid="true"] { outline: 2px solid var(--cor-erro); outline-offset: 2px; }
+
+.mensagem-erro {
+  margin: var(--esp-1) 0 0;
+  color: var(--cor-erro);
+  font-size: var(--fs-sm);
+  font-weight: var(--peso-medio);
+}
+.mensagem-erro:empty { display: none; }
+.mensagem-erro::before { content: "✕ "; }
+
+/* Campo desabilitado */
+input:disabled, select:disabled, textarea:disabled {
+  background: var(--cor-neutra-50); color: var(--cor-neutra-700); cursor: not-allowed; opacity: 0.7;
+}
+
+.opcoes { display: flex; flex-wrap: wrap; gap: var(--esp-3) var(--esp-4); }
+.opcoes label,
+.campo--termo label { font-weight: var(--peso-normal); display: flex; align-items: center; gap: var(--esp-2); }
+input[type="radio"],
+input[type="checkbox"] { width: 1.15rem; height: 1.15rem; accent-color: var(--cor-primaria-700); }
+input[type="range"] { accent-color: var(--cor-primaria-700); padding: 0; border: 0; }
+
+.formulario__acoes { display: flex; flex-wrap: wrap; gap: var(--esp-3); }
+
+/* ---------- 6.10 Rodapé ---------- */
+.rodape {
+  background: var(--cor-primaria-900); color: var(--cor-neutra-0);
+  padding-block: var(--esp-5); margin-top: var(--esp-5);
+}
+.rodape a { color: var(--cor-secundaria-500); }
+.rodape__interno { display: flex; flex-wrap: wrap; gap: var(--esp-5); justify-content: space-between; }
+.rodape address { font-style: normal; }
+.rodape ul { list-style: none; padding: 0; margin: 0; }
+.rodape__copy { flex-basis: 100%; margin: 0; font-size: var(--fs-sm); }
+
+
+/* =========================================================
+   6.11 COMPONENTES DE FEEDBACK
+   Padrão de variantes (igual em badge, alerta e toast):
+     --sucesso | --info | --aviso | --erro
+   Fundo claro + texto escuro da mesma família = contraste AA.
+   ========================================================= */
+
+/* ---------- Badges (etiquetas de categoria/status) ---------- */
+.badges { list-style: none; margin: 0 0 var(--esp-2); padding: 0; display: flex; flex-wrap: wrap; gap: var(--esp-2); }
+.badge {
+  display: inline-flex; align-items: center; gap: var(--esp-1);
+  font-size: var(--fs-xs); font-weight: var(--peso-forte); line-height: 1.4;
+  padding: var(--esp-1) var(--esp-2);
+  border-radius: var(--raio-pilula);
+  background: var(--cor-neutra-50); color: var(--cor-neutra-900);
+  border: 1px solid currentColor;
+}
+.badge--sucesso { background: var(--cor-sucesso-50); color: var(--cor-primaria-900); }
+.badge--info    { background: var(--cor-info-50);    color: var(--cor-info); }
+.badge--aviso   { background: var(--cor-aviso-50);   color: var(--cor-aviso); }
+.badge--erro    { background: var(--cor-erro-50);    color: var(--cor-erro); }
+.badge--destaque { background: var(--cor-secundaria-500); color: var(--cor-neutra-900); border-color: transparent; }
+
+/* ---------- Alertas (mensagens fixas na página) ---------- */
+.alerta {
+  display: flex; gap: var(--esp-3); align-items: flex-start;
+  padding: var(--esp-3) var(--esp-4);
+  margin: 0 0 var(--esp-4);
+  border-left: 6px solid currentColor;
+  border-radius: var(--raio-sm);
+  background: var(--cor-neutra-0); color: var(--cor-neutra-900);
+}
+.alerta__icone { font-size: var(--fs-md); line-height: 1; flex: 0 0 1.5rem; text-align: center; }
+.alerta__titulo { display: block; font-weight: var(--peso-forte); margin-bottom: var(--esp-1); }
+.alerta p { margin: 0; color: var(--cor-neutra-900); }
+.alerta--sucesso { background: var(--cor-sucesso-50); color: var(--cor-primaria-900); }
+.alerta--info    { background: var(--cor-info-50);    color: var(--cor-info); }
+.alerta--aviso   { background: var(--cor-aviso-50);   color: var(--cor-aviso); }
+.alerta--erro    { background: var(--cor-erro-50);    color: var(--cor-erro); }
+
+/* ---------- Toast (notificação temporária, não bloqueia a tela) ---------- */
+.toast-area {
+  position: fixed; z-index: 1000;
+  right: var(--esp-3); bottom: var(--esp-3); left: var(--esp-3);
+  display: flex; flex-direction: column; align-items: flex-end; gap: var(--esp-2);
+  pointer-events: none;            /* a área não bloqueia cliques na página */
+}
+.toast {
+  pointer-events: auto;
+  display: flex; align-items: center; gap: var(--esp-3);
+  width: min(100%, 380px);
+  padding: var(--esp-3) var(--esp-4);
+  background: var(--cor-neutra-900); color: var(--cor-neutra-0);
+  border-left: 6px solid var(--cor-secundaria-500);
+  border-radius: var(--raio-md); box-shadow: var(--sombra-md);
+  animation: toast-entrada 0.25s ease-out;
+}
+.toast > [aria-hidden="true"] { flex: 0 0 1.25rem; text-align: center; }
+.toast--sucesso { border-left-color: #6fcf73; }
+.toast--info    { border-left-color: #7fb3ea; }
+.toast--aviso   { border-left-color: var(--cor-secundaria-500); }
+.toast--erro    { border-left-color: #ff6b81; }
+.toast__fechar {
+  margin-left: auto; background: none; border: 0; color: inherit;
+  font-size: var(--fs-md); cursor: pointer; padding: var(--esp-1);
+}
+.toast--saindo { animation: toast-saida 0.25s ease-in forwards; }
+@keyframes toast-entrada { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes toast-saida   { to   { opacity: 0; transform: translateY(16px); } }
+@media (min-width: 768px) { .toast-area { left: auto; } }
+
+/* ---------- Modal (elemento nativo <dialog>) ---------- */
+.modal {
+  width: min(calc(100% - 2rem), 480px);
+  padding: 0; border: 0;
+  border-radius: var(--raio-md); box-shadow: var(--sombra-md);
+  color: var(--cor-neutra-900);
+}
+.modal::backdrop { background: rgb(31 77 43 / 0.6); backdrop-filter: blur(2px); }
+.modal[open] { animation: toast-entrada 0.25s ease-out; }
+.modal__cabecalho {
+  display: flex; align-items: center; gap: var(--esp-2);
+  padding: var(--esp-4) var(--esp-4) 0;
+}
+.modal__cabecalho h2 { margin: 0; font-size: var(--fs-lg); }
+.modal__corpo { padding: var(--esp-3) var(--esp-4); }
+.modal__acoes {
+  display: flex; justify-content: flex-end; gap: var(--esp-3);
+  padding: 0 var(--esp-4) var(--esp-4); margin: 0;
+}
+
+/* ---------- Guia de componentes ---------- */
+.vitrine { display: flex; flex-wrap: wrap; gap: var(--esp-3); align-items: center; margin-bottom: var(--esp-4); }
+.vitrine code { background: var(--cor-primaria-100); padding: 0 var(--esp-1); border-radius: var(--raio-sm); }
+
+/* =========================================================
+   7. PREFERÊNCIAS DO USUÁRIO
+   ========================================================= */
+@media (prefers-reduced-motion: reduce) {
+  * { transition: none !important; animation: none !important; }
+}
+
+/* =========================================================
+   8. SPA — componentes da Experiência III
+   ========================================================= */
+
+/* Animação suave ao trocar de view */
+.view-entrando { animation: view-entrada 0.3s ease-out; }
+@keyframes view-entrada { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+#app:focus { outline: none; }
+h1[tabindex="-1"]:focus { outline: none; }
+
+/* Filtros de categoria (chips) — aria-pressed indica o ativo */
+.filtros { display: flex; flex-wrap: wrap; gap: var(--esp-2); margin-bottom: var(--esp-4); }
+.filtro {
+  font: inherit; font-size: var(--fs-sm); font-weight: var(--peso-medio);
+  padding: var(--esp-2) var(--esp-3);
+  border: var(--borda-campo) solid var(--cor-primaria-700); border-radius: var(--raio-pilula);
+  background: var(--cor-neutra-0); color: var(--cor-primaria-900); cursor: pointer;
+  transition: background-color var(--transicao), color var(--transicao);
+}
+.filtro:hover { background: var(--cor-primaria-100); }
+.filtro[aria-pressed="true"] { background: var(--cor-primaria-700); color: var(--cor-neutra-0); }
+
+/* Lista de cadastros salvos no localStorage */
+.lista-cadastros { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--esp-3); }
+.item-cadastro {
+  display: flex; flex-wrap: wrap; gap: var(--esp-3); align-items: center; justify-content: space-between;
+  padding: var(--esp-3) var(--esp-4);
+  background: var(--cor-neutra-0); border-radius: var(--raio-md); box-shadow: var(--sombra-sm);
+}
+.item-cadastro .badges { margin: var(--esp-1) 0; }
+.estado-vazio {
+  padding: var(--esp-4); text-align: center; color: var(--cor-neutra-700);
+  border: 2px dashed var(--cor-neutra-300); border-radius: var(--raio-md);
+}

@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="ONG Raízes do Cerrado: educação ambiental, hortas comunitárias e segurança alimentar em Catalão (GO).">
+  <title>Início | ONG Raízes do Cerrado</title>
+  <link rel="icon" href="imagens/logo.svg" type="image/svg+xml">
+
+  <!-- CSS em camadas: tokens do Design System → reset → estilos -->
+  <link rel="stylesheet" href="css/tokens.css">
+  <link rel="stylesheet" href="css/reset.css">
+  <link rel="stylesheet" href="css/style.css">
+
+  <!-- type="module": permite usar import/export entre os arquivos JS.
+       Módulos já são carregados com "defer" automaticamente. -->
+  <script type="module" src="js/main.js"></script>
+</head>
+<body>
+
+  <!--
+    CASCA DA SPA (Single Page Application)
+    Este é o ÚNICO documento HTML completo do site. Cabeçalho e rodapé
+    ficam fixos; o roteador (js/router.js) troca apenas o conteúdo do
+    <main id="app"> ao navegar, carregando as views da pasta html/.
+  -->
+  <a class="pular-link" href="#app">Pular para o conteúdo principal</a>
+
+  <header class="cabecalho">
+    <div class="container cabecalho__interno">
+      <a href="#/inicio" class="logo">
+        <img src="imagens/logo.svg" alt="" width="40" height="40">
+        <span>Raízes do Cerrado</span>
+      </a>
+
+      <nav aria-label="Menu principal">
+        <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="menu-principal">
+          <span class="menu-toggle__barra" aria-hidden="true"></span>
+          <span class="sr-only">Abrir menu de navegação</span>
+        </button>
+        <!-- data-rota: o roteador usa para marcar aria-current="page" no link ativo -->
+        <ul class="menu" id="menu-principal">
+          <li class="menu__item"><a href="#/inicio" data-rota="inicio">Início</a></li>
+          <li class="menu__item menu__item--submenu">
+            <a href="#/projetos" data-rota="projetos" aria-haspopup="true">Projetos</a>
+            <ul class="submenu" aria-label="Projetos">
+              <li><a href="#/projetos/hortas">Hortas Comunitárias</a></li>
+              <li><a href="#/projetos/escola">Escola Viva do Cerrado</a></li>
+              <li><a href="#/projetos/cozinha">Cozinha Solidária</a></li>
+              <li><a href="#/projetos/titulo-participar">Como participar</a></li>
+            </ul>
+          </li>
+          <li class="menu__item"><a href="#/cadastro" data-rota="cadastro" class="botao botao--pequeno">Seja voluntário</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Área dinâmica: o roteador injeta aqui a view da rota atual.
+       tabindex="-1" permite mover o foco para cá após cada navegação. -->
+  <main id="app" tabindex="-1">
+    <!-- Conteúdo exibido se o JavaScript estiver desligado -->
+    <noscript>
+      <div class="container secao">
+        <p>Este site precisa de JavaScript ativado para funcionar.</p>
+      </div>
+    </noscript>
+  </main>
+
+  <footer class="rodape">
+    <div class="container rodape__interno">
+      <address>
+        <strong>ONG Raízes do Cerrado</strong><br>
+        Rua das Sementes, 100 — Centro, Catalão (GO)<br>
+        <a href="mailto:contato@raizesdocerrado.org.br">contato@raizesdocerrado.org.br</a><br>
+        <a href="tel:+5564999990000">(64)&nbsp;99999&#8209;0000</a>
+      </address>
+      <nav aria-label="Links do rodapé">
+        <ul>
+          <li><a href="#/inicio">Início</a></li>
+          <li><a href="#/projetos">Projetos</a></li>
+          <li><a href="#/cadastro">Cadastro</a></li>
+        </ul>
+      </nav>
+      <p class="rodape__copy"><small>&copy; 2026 ONG Raízes do Cerrado. Organização fictícia criada para fins acadêmicos.</small></p>
+    </div>
+  </footer>
+
+</body>
+</html>

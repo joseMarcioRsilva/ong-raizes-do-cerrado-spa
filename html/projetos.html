@@ -1,0 +1,79 @@
+<!-- VIEW: Projetos
+     Fragmento HTML carregado pelo roteador (js/router.js) dentro do <main id="app">.
+     As partes repetitivas (filtros, cartões e linhas da agenda) NÃO estão escritas
+     aqui: são geradas pelos templates de js/templates/componentes.js a partir
+     dos dados de js/data/projetos.js. -->
+<section class="hero hero--compacto" aria-labelledby="titulo-principal">
+  <div class="container">
+    <h1 id="titulo-principal" tabindex="-1">Nossos projetos</h1>
+    <p class="hero__texto">Iniciativas que unem cuidado com o Cerrado e combate à fome.</p>
+  </div>
+</section>
+
+<section class="container secao" aria-labelledby="titulo-ativos">
+  <h2 id="titulo-ativos">Projetos em andamento</h2>
+
+  <!-- Filtro por categoria: botões gerados pelo JS -->
+  <div class="filtros" role="group" aria-label="Filtrar projetos por categoria" data-filtros></div>
+
+  <!-- Ponto de montagem dos cartões (template cartaoProjeto) -->
+  <div class="grade-3" data-lista-projetos aria-live="polite"></div>
+</section>
+
+<section class="secao secao--destaque" aria-labelledby="titulo-agenda">
+  <div class="container">
+    <h2 id="titulo-agenda">Agenda de atividades</h2>
+    <div class="tabela-rolagem">
+      <table>
+        <caption>Atividades semanais abertas a voluntários</caption>
+        <thead>
+          <tr>
+            <th scope="col">Atividade</th>
+            <th scope="col">Dia</th>
+            <th scope="col">Horário</th>
+            <th scope="col">Vagas</th>
+          </tr>
+        </thead>
+        <!-- Linhas geradas pelo template linhaAgenda -->
+        <tbody data-agenda></tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<section class="container secao" aria-labelledby="titulo-participar">
+  <h2 id="titulo-participar">Como participar</h2>
+  <p>Escolha a forma de apoio que combina com você. As duas começam pelo mesmo cadastro.</p>
+
+  <div class="grade-2">
+    <article class="cartao" aria-labelledby="titulo-voluntariado">
+      <h3 id="titulo-voluntariado">Seja voluntário</h3>
+      <p>Doe seu tempo nas hortas, nas oficinas ou na cozinha.</p>
+      <ol>
+        <li>Preencha o cadastro escolhendo "Voluntário".</li>
+        <li>Participe de uma conversa de acolhimento (online, 30 min).</li>
+        <li>Escolha a atividade e o horário na agenda acima.</li>
+      </ol>
+      <p><a href="#/cadastro" class="botao">Quero ser voluntário</a></p>
+    </article>
+
+    <article class="cartao" aria-labelledby="titulo-doacao">
+      <h3 id="titulo-doacao">Faça uma doação</h3>
+      <p>Sua contribuição vira sementes, ferramentas e refeições.</p>
+      <dl class="lista-doacao">
+        <dt>R$ 30</dt><dd>Kit de sementes para um canteiro</dd>
+        <dt>R$ 80</dt><dd>Ferramentas para um mutirão</dd>
+        <dt>R$ 150</dt><dd>50 refeições da Cozinha Solidária</dd>
+      </dl>
+      <p>Também recebemos doações de sementes, adubo e utensílios de cozinha.</p>
+      <p><a href="#/cadastro" class="botao">Quero doar</a></p>
+    </article>
+  </div>
+</section>
+
+<aside class="container secao" aria-labelledby="titulo-futuro">
+  <p class="badges"><span class="badge badge--destaque">★ Em breve</span></p>
+  <h2 id="titulo-futuro">Viveiro de Mudas Nativas</h2>
+  <p>Estamos captando recursos para produzir 10 mil mudas de espécies do Cerrado por ano, como pequi, baru e ipê.</p>
+  <p><a href="#/cadastro" class="botao">Quero apoiar este projeto</a></p>
+</aside>

@@ -1,0 +1,92 @@
+<!-- VIEW: Início — fragmento carregado pelo roteador dentro do <main id="app"> -->
+<!-- Seção de destaque (hero) -->
+    <section class="hero" aria-labelledby="titulo-principal">
+      <div class="container">
+        <!-- Único <h1> da página -->
+        <h1 id="titulo-principal" tabindex="-1">Plantando conhecimento, colhendo dignidade</h1>
+        <p class="hero__texto">
+          Desde 2015 levamos educação ambiental, hortas comunitárias e alimentação
+          saudável para famílias de Catalão e região.
+        </p>
+        <div class="hero__acoes">
+          <a href="#/cadastro" class="botao">Quero ajudar</a>
+          <a href="#/projetos" class="botao botao--secundario">Conheça os projetos</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Quem somos -->
+    <section class="container secao" aria-labelledby="titulo-sobre">
+      <h2 id="titulo-sobre">Quem somos</h2>
+      <p>
+        A <strong>Raízes do Cerrado</strong> é uma organização sem fins lucrativos
+        formada por moradores, professores e agricultores familiares. Acreditamos que
+        cuidar do Cerrado e combater a fome são a mesma luta.
+      </p>
+
+      <!-- Imagem de conteúdo: alt descreve o que a imagem mostra.
+           width/height evitam que o layout "pule" ao carregar (CLS) -->
+      <figure class="foto-destaque">
+        <!-- <picture>: o navegador usa WebP (mais leve) e, se não suportar, cai no PNG -->
+        <picture>
+          <source srcset="imagens/horta.webp" type="image/webp">
+          <img src="imagens/horta.png"
+             alt="Ilustração de uma horta comunitária com pés de alface e cenouras plantados em canteiros de terra, sob o sol"
+             width="320" height="180" loading="lazy">
+        </picture>
+        <figcaption>Uma das 18 hortas comunitárias mantidas pela ONG em Catalão (GO).</figcaption>
+      </figure>
+
+      <!-- Missão, visão e valores: três blocos independentes = <article> -->
+      <div class="grade-3">
+        <article class="cartao">
+          <h3>Missão</h3>
+          <p>Promover segurança alimentar e consciência ambiental em comunidades vulneráveis.</p>
+        </article>
+        <article class="cartao">
+          <h3>Visão</h3>
+          <p>Ser referência em agricultura urbana sustentável no sudeste goiano até 2030.</p>
+        </article>
+        <article class="cartao">
+          <h3>Valores</h3>
+          <p>Transparência, respeito ao meio ambiente, solidariedade e participação comunitária.</p>
+        </article>
+      </div>
+    </section>
+
+    <!-- Números de impacto -->
+    <section class="secao secao--destaque" aria-labelledby="titulo-impacto">
+      <div class="container">
+        <h2 id="titulo-impacto">Nosso impacto</h2>
+        <!-- <dl> (lista de definição): par "rótulo → valor" com significado semântico -->
+        <dl class="numeros">
+          <div>
+            <dt>Famílias atendidas</dt>
+            <dd>1.200+</dd>
+          </div>
+          <div>
+            <dt>Hortas comunitárias</dt>
+            <dd>18</dd>
+          </div>
+          <div>
+            <dt>Voluntários ativos</dt>
+            <dd>140</dd>
+          </div>
+          <div>
+            <dt>Toneladas de alimento colhidas</dt>
+            <dd>32</dd>
+          </div>
+        </dl>
+      </div>
+    </section>
+
+    <!-- Como ajudar -->
+    <section class="container secao" aria-labelledby="titulo-ajudar">
+      <h2 id="titulo-ajudar">Como você pode ajudar</h2>
+      <ol class="lista-passos">
+        <li><strong>Seja voluntário:</strong> dedique algumas horas por mês às hortas ou às oficinas.</li>
+        <li><strong>Doe:</strong> sementes, ferramentas ou uma contribuição financeira.</li>
+        <li><strong>Divulgue:</strong> compartilhe nosso trabalho nas suas redes sociais.</li>
+      </ol>
+      <p><a href="#/cadastro" class="botao">Fazer meu cadastro</a></p>
+    </section>
